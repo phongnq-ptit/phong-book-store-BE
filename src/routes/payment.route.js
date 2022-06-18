@@ -10,6 +10,8 @@ const paymentRoute = (app) => {
 
     router.post('/payment', auth, paymentCtrl.createPayment);
 
+    router.patch('/payment/:id', auth, authAdmin, paymentCtrl.updateStatus);
+
     app.use('/api', router);
 };
 

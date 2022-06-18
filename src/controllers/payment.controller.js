@@ -37,6 +37,18 @@ const paymentCtrl = {
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
+    },
+    updateStatus: async (req, res) => {
+        try {
+            await Payment.findByIdAndUpdate(
+                { _id: req.params.id },
+                { status: true }
+            );
+
+            return res.status(200).json({ msg: 'Xác nhận đơn hàng thành công!' });
+        } catch (error) {
+            return res.status(500).json({ msg: error.message });
+        }
     }
 };
 
