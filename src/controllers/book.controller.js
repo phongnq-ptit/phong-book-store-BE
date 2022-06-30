@@ -6,8 +6,8 @@ const bookCtrl = {
         try {
             const features = new APIfeatures(Book.find(), req.query)
                 .filtering()
-                .paginating()
                 .sorting()
+                .paginating()
 
             const books = await features.query;
 

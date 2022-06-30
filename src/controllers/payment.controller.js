@@ -1,11 +1,14 @@
 import Payment from "../models/payment.model.js";
 import User from "../models/user.model.js";
 import Book from "../models/book.model.js";
+import APIfeatures from "../lib/features.js";
 
 const paymentCtrl = {
     getPayments: async (req, res) => {
         try {
-            const payments = await Payment.find();
+            const features = new APIfeatures(Payment.find(), req.query).filtering();
+
+            const payments = await features.query;
 
             res.status(200).json(payments);
         } catch (err) {
@@ -18,12 +21,12 @@ const paymentCtrl = {
 
             if (!user) return res.status(400).json({ msg: "Người dùng không tồn tại!." });
 
-            const { cart, address } = req.body;
+            const { cart, address, phone, name } = req.body;
 
-            const { _id, name, email } = user;
+            const { _id, email } = user;
 
             const newPayment = new Payment({
-                user_id: _id, name, email, cart, address
+                user_id: _id, name, email, cart, address, phone
             });
 
             cart.filter(item => {
@@ -40,6 +43,9 @@ const paymentCtrl = {
     },
     updateStatus: async (req, res) => {
         try {
+
+            const { status } = req.body.status;
+
             await Payment.findByIdAndUpdate(
                 { _id: req.params.id },
                 { status: true }

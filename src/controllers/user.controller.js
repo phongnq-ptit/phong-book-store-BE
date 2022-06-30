@@ -108,6 +108,15 @@ const userCtrl = {
             return res.status(500).json({ msg: error.message });
         }
     },
+    getAllUser: async (req, res) => {
+        try {
+            const users = await User.find();
+
+            return res.status(200).json(users);
+        } catch (error) {
+            return res.status(500).json({ msg: error.message });
+        }
+    },
     getUser: async (req, res) => {
         try {
             const user = await User.findById(req.user.id).select('-password');
@@ -167,7 +176,6 @@ const userCtrl = {
             });
 
             return res.status(200).json(histories);
-
         } catch (error) {
             return res.status(500).json({ msg: error.message });
         }

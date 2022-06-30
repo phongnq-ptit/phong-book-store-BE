@@ -1,4 +1,5 @@
 import Category from '../models/category.model.js';
+import Book from '../models/book.model.js'
 
 const categoryCtrl = {
     getAllCategory: async (req, res) => {
@@ -33,6 +34,12 @@ const categoryCtrl = {
     },
     deleteCategory: async (req, res) => {
         try {
+            const books = await Book.findOne({ category: req.params.id });
+
+            if (books) return res.status(400).json({
+                msg: "Vui lòng xóa các sản phẩm cùng thể loại trước!!"
+            });
+
             await Category.findByIdAndDelete(req.params.id);
 
             res.json({ msg: "Xóa thể loại thành công!!" });
